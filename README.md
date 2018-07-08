@@ -25,7 +25,8 @@ Ce script va créer un nouveau projet dans le dossier ./Projets nous allons voir
 
 ![Alt text](images_doc/Ex1.png?raw=true "Title")
 
-### Remarque : ces deux étapes pourraient être réunies en une seule, cependant il faut utiliser une application web du côté du serveur  (on ne peut pas générer des dossiers coté client en javascript).  Etant donné que l’on doit disposer d’un serveur pour réaliser cela, la partie génération de dossier est (pour le moment) traitée par le script 02-Build
+### Remarque :
+Ces deux étapes pourraient être réunies en une seule, cependant il faut utiliser une application web du côté du serveur  (on ne peut pas générer des dossiers coté client en javascript).  Etant donné que l’on doit disposer d’un serveur pour réaliser cela, la partie génération de dossier est (pour le moment) traitée par le script 02-Build
 
 
 
@@ -53,7 +54,8 @@ Pour le Docker Routeur: configuration par défaut de ripd
 Pour le Docker WEB: site d’exemple
 
 
-### Scripts : Pour sauvegarder l’avancement de la configuration des différents éléments virtuels (par exemple configuration IP, routes, IPTABLES.. etc) un système de script a été mis en place. Dans un Projet chaque élément dispose d’un script du même nom qui lui est associé dans le dossier scripts. 
+### Scripts :
+Pour sauvegarder l’avancement de la configuration des différents éléments virtuels (par exemple configuration IP, routes, IPTABLES.. etc) un système de script a été mis en place. Dans un Projet chaque élément dispose d’un script du même nom qui lui est associé dans le dossier scripts. 
 Pour ce qui est des Namespace ces scripts sont exécutés automatiquement au démarrage (fonctionnalité de YANE).
 Pour ce qui est des Dockers il suffit d’exécuter la commande : init dans la console xterm de l’élément virtuel pour exécuter ce script. 
 (Lors du démarrage du projet avec le script START les scripts associés à chaque docker sont copiés dans le dossier « /etc/scripts » présent dans leur dossier de fichiers partagés respectif, emplacement qui a été préalablement ajouté au PATH du container Docker) 
@@ -176,18 +178,35 @@ Un projet complètement configuré (scripts et fichiers partagés) est déjà pr
 Pour tester la configuration on peut utiliser les commandes suivantes depuis la console xterm de Client1 :
 
 Test routage :
-```traceroute 12.0.0.2```
+```
+traceroute 12.0.0.2
+```
 
 Test web :
-```firefox 10.0.0.2```
+```
+firefox 10.0.0.2
+```
 
 Test DNS :
-```firefox www.monsupersite.com
-host www.monsupersite.com```
+```
+firefox www.monsupersite.com
+```
+ou
+```
+host www.monsupersite.com
+```
 
 Test FTP :
-```filezilla```  ( puis rentrer les infos suivantes host: 11.0.0.2   user: ftpusr   pass: ftpusr)
+```
+filezilla
+```
+Puis rentrer les informations suivantes :
+host: 11.0.0.2
+user: ftpusr
+pass: ftpusr
 
 Pour visualiser les paquets passants par le routeur RRI on peut exécuter la commande suivante dans le dossier du projet :
 
-```./wireshark RRI```
+```
+./wireshark RRI
+```
