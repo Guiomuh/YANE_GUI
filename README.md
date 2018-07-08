@@ -4,7 +4,10 @@ Cette application web propose une interface graphique pour l’outil d’émulat
 
 
 ## 1) Installation :
-Ce projet nécessite quelques dépendances pour être fonctionnel (cf. Section 8). Pour les installer lancez la commande suivante :   sh 00-Install.sh
+Ce projet nécessite quelques dépendances pour être fonctionnel (cf. Section 8). Pour les installer lancez la commande suivante :
+```
+sh 00-Install.sh
+```
 L’installation qui peut prendre plusieurs minutes va commencer. (installation des programmes + création des images docker à partir des Dockerfiles)
 
 
@@ -47,11 +50,11 @@ Ce système permet ainsi de sauvegarder les modifications des fichiers de config
 
 Chaque image docker dispose de fichiers par défaut qui sont copiés dans leur dossier partagé lors de la création d’un Projet (Phase de Build). On peut retrouver et modifier ces fichiers par défaut dans le dossier ./ModelFiles/files/ on retrouve dans ce dossier les noms des différentes images docker disponibles. Ainsi on retrouve par défaut les fichiers suivants :
 
-Pour le Docker DHCP : configuration par défaut de dhcpd
-Pour le Docker DNS : Configuration complète d’exemple (fonctionne pour l’exemple de projet fonctionnel)
-Pour le Docker FTP: Configuration complète d’exemple (fonctionne pour l’exemple de projet fonctionnel)
-Pour le Docker Routeur: configuration par défaut de ripd
-Pour le Docker WEB: site d’exemple
+- Pour le Docker DHCP : configuration par défaut de dhcpd
+- Pour le Docker DNS : Configuration complète d’exemple (fonctionne pour l’exemple de projet fonctionnel)
+- Pour le Docker FTP: Configuration complète d’exemple (fonctionne pour l’exemple de projet fonctionnel)
+- Pour le Docker Routeur: configuration par défaut de ripd
+- Pour le Docker WEB: site d’exemple
 
 
 ### Scripts :
@@ -83,14 +86,14 @@ Wireshark s’ouvre alors et on peut ensuite sélectionner les interfaces de la 
 
 ![Alt text](images_doc/Archi1.png?raw=true "Title")
 
-00-Install.sh : Script d’installation des dépendances
-01-Create.html : Racourcis pour lancer l’interface grafique de création d’architecture
-02-Build : Script permettant de créer un projet à partir d’une architecture (fichier JSON)
-Architectures JSON : Dossier contennat des architectures JSON d’exemples (déjà crées par l’interface)
-Docker : Dossier contennat les fichiers de création des images Docker (images crées lors de l’installation)
-ModelFiles : Fichiers modèles utilisés lors de la création d’un projet (par Build)
-Projets : Dossier contenant les Projets précedement crées
-WebFiles : Dossier contenant les fichiers de l’interface graphique (WEB)
+- 00-Install.sh : Script d’installation des dépendances
+- 01-Create.html : Racourcis pour lancer l’interface grafique de création d’architecture
+- 02-Build : Script permettant de créer un projet à partir d’une architecture (fichier JSON)
+- Architectures JSON : Dossier contennat des architectures JSON d’exemples (déjà crées par l’interface)
+- Docker : Dossier contennat les fichiers de création des images Docker (images crées lors de l’installation)
+- ModelFiles : Fichiers modèles utilisés lors de la création d’un projet (par Build)
+- Projets : Dossier contenant les Projets précedement crées
+- WebFiles : Dossier contenant les fichiers de l’interface graphique (WEB)
 
 
 
@@ -99,18 +102,18 @@ WebFiles : Dossier contenant les fichiers de l’interface graphique (WEB)
 
 ![Alt text](images_doc/Archi2.png?raw=true "Title")
 
-files : Dossier contenant les fichiers partagés avec les containers dockers
-scripts : Dossier contenant les scripts d’initialisation
-START : Script de lancement du projet
-STOP : Script d’arrêt du projet
-wireshark : Script de lancement de wireshark sur un élément virtuel
+- files : Dossier contenant les fichiers partagés avec les containers dockers
+- scripts : Dossier contenant les scripts d’initialisation
+- START : Script de lancement du projet
+- STOP : Script d’arrêt du projet
+- wireshark : Script de lancement de wireshark sur un élément virtuel
 
 Fichiers et dossiers de configuration de YANE :
-yane             
-yane.yml
-yane-config.yml
-yane.yml.sessions
-modules      
+- yane             
+- yane.yml
+- yane-config.yml
+- yane.yml.sessions
+- modules      
 
 
 
@@ -119,19 +122,22 @@ modules
 Une machine virtuelle (hyperviseur Vmware Workstation 14) est disponible au téléchargement avec tout d’installé à l’adresse suivante :
 
 Logins :
+```
 user : root
 password : root
+```
 
+```
 user : n7
 password : n7
-
+```
 
 
 ## 7) Images Dockers :
-apache_n7:latest → server web (Apache2) Les fichiers du site sont dans le dossier /var/www/html/
-dns_n7:latest
-dhcp_n7:latest
-quagga_n7:latest → routage dynamique (ripd, zebra.. etc)
+- apache_n7:latest → server web (Apache2) Les fichiers du site sont dans le dossier /var/www/html/
+- dns_n7:latest
+- dhcp_n7:latest
+- quagga_n7:latest → routage dynamique (ripd, zebra.. etc)
 
 
 Pour configurer le routage dynamique avec ripd:
