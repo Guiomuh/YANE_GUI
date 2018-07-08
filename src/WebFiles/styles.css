@@ -1,0 +1,279 @@
+/*LAYOUT*/
+body {
+  overflow: hidden;
+}
+
+.workspace {
+  margin:0;
+  height: 100%;
+  width:100%;
+  position: absolute;
+  top:0;
+  bottom:0;
+  right:0;
+  left:0;
+  overflow: hidden;
+  background-color: #272822;
+}
+
+
+
+
+
+#sidebar {
+  height:100%;
+  width:18%;
+  left:0;
+  top:0;
+  background-color: #272822;
+  position: absolute;
+  border-right: 5px solid #272822;
+  z-index: 10;
+  overflow-y: hidden;
+  text-align: center;
+}
+
+#sidebarContent {
+  top:10em;
+  width:100%;
+  overflow-y: auto;
+  bottom: 2em;
+  position: absolute;
+}
+
+#sidebarContent::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #272822;
+}
+
+#sidebarContent::-webkit-scrollbar
+{
+  width: 12px;
+  background-color: #272822;
+}
+
+#sidebarContent::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #555;
+}
+
+#content {
+  height: 100%;
+  width:82%;
+  top:0;
+  right:0;
+  background-color: #434343;
+  position:absolute;
+  overflow: hidden;
+}
+
+#panel {
+  height:auto;
+  white-space: nowrap; /* interdiction de passer à la ligne */
+  width:82%;
+  right:0;
+  bottom:0;
+  background-color: rgb(99, 99, 105);
+  position:absolute;
+}
+
+.panzoom {
+    width:10000px;
+    height:10000px;
+    -webkit-transform: translate(-50%, -50%);
+    position: absolute;
+    background-position: center; 
+    background-color: #074377a1;
+    background-image: linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent);
+    background-size: 5vh 5vh;
+    overflow:visible;
+}
+
+
+
+
+/* BOUTONS */
+
+.btn {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em !important;
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
+.imgbtn {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em !important;
+  margin-right: 1em;
+  margin-left: 1em;
+  max-height: 2em;
+  cursor: pointer;
+}
+
+.imgbtn_block {
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  cursor: default !important;
+}
+
+
+.download {
+  right: 2em;
+  position: absolute;
+}
+
+
+
+
+
+
+
+/* Elements */
+
+#Title {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.MainLogo {
+  max-width: 80%;
+  max-height: 7em;
+  margin-bottom: 3em;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 3em;
+  text-align: center;
+  z-index: 500;
+}
+
+/* Interfaces */
+.aLabel {
+  z-index: 0;
+  margin-left: -2.8em;
+  color: white;
+}
+
+.jtk-endpoint {
+  z-index: 10;
+}
+
+
+
+
+
+
+
+/*MODELE (dans le menu)*/
+.imgmodel {
+  max-width: 7.5em;
+  max-height: 7.5em;
+  margin-bottom: 0.5em;
+  text-align: center;
+  z-index: 500;
+}
+
+
+.model {
+  width: 10em;
+  text-align: center;
+  cursor:pointer;
+  z-index: 500;
+  overflow:visible;
+  color:white;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+
+
+
+
+
+
+/* ITEM (dans la zone de travail) */
+.item {
+  cursor: pointer;
+  position: absolute;
+  overflow: hidden;
+  white-space: nowrap;
+  /*border: 1px solid #004c66;
+  margin:3em;
+  padding: 2px;*/
+  padding-right: 4em;
+  border-radius: 3px;
+  background-color: rgba(0, 191, 255, 0.2);
+  text-align: center;
+  color:white;
+  overflow: visible;
+  z-index: 2;
+}
+
+.item:hover {
+  border: 1px solid #00BFFF;
+}
+
+.selected {
+  border: 1px solid #00BFFF;
+}
+
+
+
+
+
+
+
+/* FONCTIONS */
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.ui-draggable-dragging {
+  z-index: 20;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.diagram {
+  position: absolute;
+}
+
+
+
+path {
+  stroke: #00BFFF !important;
+  stroke-width: 2px;
+  z-index: -1;
+}
+

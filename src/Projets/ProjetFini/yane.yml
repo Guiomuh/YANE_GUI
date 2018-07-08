@@ -1,0 +1,49 @@
+network:
+  name: ProjetVide
+  version: 0.1
+  hosts:
+    - BOX
+      mode : docker
+      image : dhcp_n7:latest
+      files : ./files/BOX/etc:/
+ 
+    - Client1
+      mode : netns
+      init : ./scripts/Client1
+ 
+    - R_FAI
+      mode : docker
+      image : quagga_n7:latest
+      files : ./files/R_FAI/etc:/
+ 
+    - RRI
+      mode : docker
+      image : quagga_n7:latest
+      files : ./files/RRI/etc:/
+ 
+    - WEB
+      mode : docker
+      image : apache_n7:latest
+      files : ./files/WEB/var:/
+ 
+    - FTP
+      mode : docker
+      image : ftp_n7:latest
+      files : ./files/FTP/etc:/
+ 
+    - DNS
+      mode : docker
+      image : dns_n7:latest
+      files : ./files/DNS/etc:/
+ 
+  links :
+    - Client1:eth0!BOX:eth1
+    - R_FAI:eth0!BOX:eth0
+    - R_FAI:eth1!RRI:eth0
+    - DNS:eth0!RRI:eth2
+    - FTP:eth0!RRI:eth3
+    - WEB:eth0!RRI:eth1
+ 
+ 
+  consoles :
+    - all

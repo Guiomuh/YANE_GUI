@@ -1,0 +1,29 @@
+#!/bin/bash
+
+## STATIQUE ##
+
+#interface BOX
+#ip addr add 192.168.1.2/24 dev eth0
+#ip link set dev eth0 up
+
+#ajout de la route par défaut
+#ip route add default via 192.168.1.1
+
+
+
+## DYNAMIQUE ##
+
+# DHCP
+#dhclient eth0
+
+#ajout de la route par défaut
+#ip route add default via 192.168.1.1
+
+
+
+
+
+
+
+
+

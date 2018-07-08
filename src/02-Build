@@ -1,0 +1,193 @@
+#!/bin/bash
+
+# Make sure we are in the script directory
+ScriptDIR=$(cd `dirname $0` && pwd)
+if [ $ScriptDIR != $PWD ]; then
+   echo "Ce script doit être executé depuis son dossier" 1>&2
+   exit
+fi
+
+declare -A IMAGES
+IMAGES['WEB']="apache_n7:latest"
+IMAGES['Routeur']="quagga_n7:latest"
+IMAGES['FTP']="ftp_n7:latest"
+IMAGES['DHCP']="dhcp_n7:latest"
+IMAGES['DNS']="dns_n7:latest"
+
+# Make sure only root can run our script
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
+#On verifie qu'on a bien une entrée
+if [ $# -ne 1 ]
+  then echo "Utilisation :"
+  echo "./Build <CHEMIN FICHIER JSON>"
+  exit
+fi
+
+# On vérifie que le fichier existe bien
+if ! [ -f $1 ]; then
+	echo "Le fichier n'existe pas.."
+	exit
+fi
+
+# On verifie que le fichier est bien un JSON
+if ! jq -e '.' $1 >/dev/null 2>&1; then
+	echo "Le fichier JSON n'est pas valide.."
+	exit
+fi
+
+ProjetName=`jq '.Name' $1 | sed s/\"//g`
+
+mkdir ./Projets/$ProjetName
+dir="./Projets/"$ProjetName
+
+cp ./ModelFiles/yane* $dir
+cp ./ModelFiles/wireshark $dir
+cp -r ./ModelFiles/modules $dir
+
+cat ./ModelFiles/START > $dir/START
+cat ./ModelFiles/STOP > $dir/STOP
+
+mkdir $dir/scripts
+mkdir $dir/files
+
+# On recupère les nombres de liens, host et switchs
+nbHosts=`jq -c '.Hosts[]' $1 | wc -l`
+nbLinks=`jq -c '.Links[]' $1 | wc -l`
+nbBridges=`jq -c '.Bridges[]' $1 | wc -l`
+
+
+
+
+
+# Création yane.yml
+echo "network:
+  name: $ProjetName
+  version: 0.1
+  hosts:" > $dir/yane.yml
+
+# Traitement des Hosts
+for ((i=0; i<$nbHosts; i++))
+do
+  #On récupère le nom de l'host et son type
+  nomHost=`jq '.Hosts['$i']["Name"]' $1 | sed s/\"//g`
+  typeHost=`jq '.Hosts['$i']["Type"]' $1 | sed s/\"//g`
+
+  #On créer le script associé à l'host
+  echo "#!/bin/bash" > $dir/scripts/$nomHost
+  sudo chmod +x $dir/scripts/$nomHost
+	
+
+
+  
+
+  #Config de yane si Client (netns)
+  if [ $typeHost == "Client" ]; then
+
+    #On ajoute l'host dans le fichier de configuration de yane
+    echo "    - $nomHost" >> $dir/yane.yml
+    echo "      mode : netns" >> $dir/yane.yml
+    echo "      init : ./scripts/$nomHost" >> $dir/yane.yml
+
+  elif [ $typeHost == "Switch" ]; then
+    :
+
+  #Config de yane si Docker
+  else
+
+    #On créer les fichiers partagés de l'host
+    mkdir $dir/files/$nomHost
+    cp -r ./ModelFiles/files/$typeHost/* $dir/files/$nomHost
+
+    
+    #On ajoute l'host dans le fichier de configuration de yane
+    echo "    - $nomHost" >> $dir/yane.yml
+    echo "      mode : docker" >> $dir/yane.yml
+    echo "      image : ${IMAGES[$typeHost]}" >> $dir/yane.yml
+   
+    if [ $typeHost == "WEB" ]; then
+      #
+      echo "      files : ./files/$nomHost/var:/" >> $dir/yane.yml
+      
+      #On met à jour les fichiers START et STOP
+      echo "  cp ./scripts/$nomHost ./files/$nomHost/var/scripts/init" >> $dir/START
+      echo "  rm ./files/$nomHost/var/scripts/init" >> $dir/STOP
+
+    else
+      echo "      files : ./files/$nomHost/etc:/" >> $dir/yane.yml
+
+      #On met à jour les fichiers START et STOP
+      echo "  cp ./scripts/$nomHost ./files/$nomHost/etc/scripts/init" >> $dir/START
+      echo "  rm ./files/$nomHost/etc/scripts/init" >> $dir/STOP
+
+    fi
+  fi
+
+  echo " " >> $dir/yane.yml
+done
+
+
+# Fin du fichier START
+echo "  echo 'Chargement des VM..'
+  #On lance Yane
+  sudo ./yane > /dev/null
+  exit
+fi" >> $dir/START
+
+
+# Fin du fichier STOP
+echo "  sudo ./yane -k > /dev/null 2> /dev/null
+  #On supprime tout les namespaces
+  sudo ip -all netns delete > /dev/null
+
+  #On supprime tout les dockers
+  if [ \`sudo docker ps -a -q | wc -l\` != 0 ] ; then
+    sudo docker stop \`sudo docker ps -a -q\` > /dev/null
+    sudo docker rm \`sudo docker ps -a -q\` > /dev/null
+  fi
+fi" >> $dir/STOP
+      
+
+# Traitement des Liens
+if [ $nbLinks != "0" ]; then
+  echo "  links :" >> $dir/yane.yml
+  for ((i=0; i<$nbLinks; i++))
+  do
+    H1=`jq '.Links['$i']["H1"]' $1 | sed s/\"//g`
+    I1=`jq '.Links['$i']["I1"]' $1 | sed s/\"//g`
+    H2=`jq '.Links['$i']["H2"]' $1 | sed s/\"//g`
+    I2=`jq '.Links['$i']["I2"]' $1 | sed s/\"//g`
+
+    echo "    - $H1:$I1!$H2:$I2" >> $dir/yane.yml
+  done
+fi
+echo " " >> $dir/yane.yml
+
+#Traitement des Switchs
+if [ $nbBridges != "0" ]; then
+  echo "  bridges:" >> $dir/yane.yml
+  for ((i=0; i<$nbBridges; i++))
+  do
+  echo "    - Switch$i" >> $dir/yane.yml
+    nbElementDansBridge=`jq -c '.Bridges['$i']["Hosts"][]' $1 | wc -l`
+    chaine="interfaces: "
+    for ((j=0; j<$nbElementDansBridge; j++))
+    do
+      H=`jq '.Bridges['$i']["Hosts"]['$j']' $1 | sed s/\"//g`
+      I=`jq '.Bridges['$i']["Interfaces"]['$j']' $1 | sed s/\"//g`
+      chaine=$chaine$H:$I!
+    done
+    echo "      $chaine" >> $dir/yane.yml
+  done
+fi
+
+echo " " >> $dir/yane.yml
+echo "  consoles :" >> $dir/yane.yml
+echo "    - all" >> $dir/yane.yml
+
+
+sudo chmod -R 777 $dir
+

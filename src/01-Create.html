@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <title>YANE GUI : HOME</title>
+		<meta charset="utf8">
+        <link rel="stylesheet" href="styles.css" />
+
+        <!--Mise à l'echelle-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--Favicon
+        <link rel="icon" type="image/png" href="images/favicon.png" /> -->
+        <link rel='stylesheet prefetch' href='includes/bootstrap.min.css'>
+
+
+
+        <!-- 
+            AUTRES :
+
+            INFOS POUR REFERENCEMENT
+            <meta name="description" content="Free Web tutorials">            
+            <meta name="keywords" content="HTML, CSS, XML, JavaScript">
+            <meta name="author" content="John Doe">
+
+
+            PAS DE REF
+            <meta name="robots" content="noindex">
+
+
+            RAFRAICHIR LA PAGE TOUTE LES 30s
+            <meta http-equiv="refresh" content="30">
+
+		    
+            NO CACHE
+            <meta http-equiv="Pragma" content="no-cache" />
+            <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+            <meta http-equiv="Expires" content="0" />
+
+            
+            AJOUTS
+            <style type="text/css"></style>
+            <script type="text/javascript"></script>
+        -->
+     
+    </head>
+	
+    <body scroll="no" > 
+
+    <div class="workspace noScroll">
+
+
+
+
+        <div id="sidebar">
+
+            <img class="MainLogo" src="images/logo.png">
+
+            <div id="sidebarContent">
+
+                <table id="ModelTBL" cellspacing="100" style="margin-left: auto; margin-right: auto; color:white;">
+
+
+                    <tr><td>
+                        <div class="model" type="Client">
+                            <img class="imgmodel" src="images/client.png">
+                            <p id="Title">Client</p>                      
+                        </div>
+                    </td></tr>
+
+
+                    <tr><td>
+                        <div class="model" type="DHCP">
+                            <img class="imgmodel" src="images/box.png">
+                            <p id="Title">Server DHCP</p>
+                        </div>
+                    </td></tr>
+
+
+                    <tr><td>
+                        <div class="model" type="Routeur">
+                            <img class="imgmodel" src="images/routeur.png">
+                            <p id="Title">Routeur</p>
+                        </div>
+                    </td></tr>
+
+
+                    <tr><td>
+                        <div class="model" type="Switch">
+                            <img class="imgmodel" src="images/switch.png">
+                            <p id="Title">Switch</p>
+                        </div>
+                    </td></tr>
+
+
+                    <tr><td>
+                        <div class="model" type="WEB">
+                                <img class="imgmodel" src="images/web.png">
+                                <p id="Title">Serveur WEB</p>
+                        </div>
+                    </td></tr>
+
+
+                    <tr><td>
+                        <div class="model" type="FTP">
+                            <img class="imgmodel" src="images/ftp.png">
+                            <p id="Title">Serveur FTP</p>
+                        </div>
+                    </td></tr>
+
+
+                    <tr><td>
+                        <div class="model" type="DNS">
+                            <img class="imgmodel" src="images/dns.png">
+                            <p id="Title">Serveur DNS</p>
+                        </div>
+                    </td></tr>
+
+                </table>
+
+            </div>
+            
+        </div>
+
+
+
+
+
+        <div scroll="no" id="content" class="noselect noScroll">
+
+            <div class="panzoom noScroll">
+              
+
+              
+            </div>
+
+        </div>
+
+
+
+
+
+        <div id="panel">
+            <img id="VIEW_BTN" class="imgbtn imgbtn_block" style="max-height: 2.2em !important;" src="images/view.png">
+            <img id="DEL_ALL" class="imgbtn imgbtn_block" style="max-height: 1.7em !important;" src="images/clean.png">
+            <img id="DEL_BTN" class="imgbtn imgbtn_block" style="max-height: 2.2em !important;" src="images/bin.png">
+            
+            <button id="DOWN_BTN" class="btn btn-primary download">Télécharger l'Architecture</button>
+        </div>
+
+         
+
+        
+        <div class="modal fade" id="ModalCreate" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal"><i class="icon-xs-o-md"></i></button>
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title caps"><strong>Création Routeur</strong></h4>
+                </div>
+                <div class="modal-body">
+                  <p>Paramètres:</p>
+                  <form id="form_create" class="ui large form">
+                    <div class="ui  segment">
+                      <div class="field">
+                         <div style="margin:1em; margin-bottom: 0;">
+                            Hostname : <input id="InputHostName" type="text" name="hostname" placeholder="...">
+                          </div>
+                        </div>
+                        <div class="field">
+                          <div class="ui left icon input">
+                            <div style="margin:1em;">Nombre d'interfaces :
+                            <select name="nb">
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                            </select></div>
+                          </div>
+                        </div>
+                        <div class="field">
+                            <table style="width: 80%;">
+                                <tr>
+                                    <td><p id="Error" style="color:red;"></p></td>
+                                    <td><button id="create_submit" style="margin: 1em; margin-left: 80%;" type="submit" class="btn btn-primary">Creer</button></td>
+                                </tr>
+                            </table>
+                         </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+        <!-- JQUERY -->
+        <script src='includes/jquery-2.2.4.min.js'></script>
+        <script src='includes/jquery-ui.min.js'></script>
+
+
+
+        <!-- JSPLUMB -->
+        <script src="includes/jsplumb.min.js"></script>
+ 
+        <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.0.7/jsPlumb.min.js'></script>-->
+        <script src='includes/lodash.min.js'></script>
+        <script src='includes/dagre.min.js'></script>
+
+        <!-- PANZOOM -->
+        <script src='includes/jquery.panzoom.min.js'></script>
+
+
+        <!-- BOOTSTRAP -->
+        <script src='includes/bootstrap.min.js'></script>
+
+        <!-- CUSTOM -->
+        <script  src="js/panzoom.js"></script>
+        <script  src="js/index.js"></script>
+
+
+
+
+
+    </div>
+    </body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
