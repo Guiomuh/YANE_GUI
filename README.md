@@ -1,22 +1,26 @@
 # YANE_GUI
 
-Cette application web propose une interface graphique pour l’outil d’émulation réseau YANE en proposant des différentes applications (serveur DNS, serveur web, émulateur routeur Cisco) supplémentaires contenues dans des images Docker. 
+Cette application web propose une interface graphique pour l’outil d’émulation réseau [YANE](https://github.com/Manu-31/yane) en proposant des applications (serveur DNS, serveur WEB, serveur DHCP, serveur FTP, émulateur routeur Cisco) supplémentaires contenues dans des images Docker.
 
 
 ## 1) Installation :
-Ce projet nécessite quelques dépendances pour être fonctionnel (cf. Section 8). Pour les installer lancez la commande suivante :
+Ce projet nécessite quelques dépendances pour être fonctionnel (cf. Section 8).
+<br/>Pour les installer lancez la commande suivante :
 ```
 sh 00-Install.sh
 ```
-L’installation qui peut prendre plusieurs minutes va commencer. (installation des programmes + création des images docker à partir des Dockerfiles)
+L’installation qui peut prendre plusieurs minutes va commencer.
+<br/>(Installation des programmes + Création des images docker à partir des Dockerfiles)
 
 
 
-## 2) Création d’un projet:
+## 2) Création d’un projet :
 La création d’un projet se réalise en 2 temps :
 
 ### Etape 1 
- Dans un premier temps on génère graphiquement une architecture à l’aide de l’outil de création (01-Create.html). On peut ici glisser pour déposer les différents éléments que l’on souhaite retrouver dans notre réseau, leur attribuer un nom réseau, un nombre d’interfaces et les relier entre elles. Une fois notre architecture terminée on peut cliquer sur le boutons en bas à droite « Télécharger l’Architecture ». Un fichier JSON est alors téléchargé.
+Dans un premier temps on génère graphiquement une architecture à l’aide de l’outil de création (01-Create.html). On peut ici glisser pour déposer les différents éléments que l’on souhaite retrouver dans notre réseau, leur attribuer un nom réseau, un nombre d’interfaces et les relier entre elles.
+<br/>Une fois notre architecture terminée on peut cliquer sur le bouton en bas à droite « Télécharger l’Architecture ». 
+<br/>Un fichier JSON est alors téléchargé.
 
 ![Alt text](images_doc/Ex1.png?raw=true "Title")
 
@@ -25,30 +29,30 @@ La seconde étape consiste à générer le projet en disposant d’une architect
 ```
 ./02-Build <PATH TO JSON>
 ```
-Ce script va créer un nouveau projet dans le dossier ./Projets nous allons voir par la suite comment utiliser un tel projet.
+Ce script va créer un nouveau projet dans le dossier ./Projets (Nous allons voir par la suite comment utiliser un tel projet).
 
 
 ### Remarque :
-Ces deux étapes pourraient être réunies en une seule, cependant il faut utiliser une application web du côté du serveur  (on ne peut pas générer des dossiers coté client en javascript).  Etant donné que l’on doit disposer d’un serveur pour réaliser cela, la partie génération de dossier est (pour le moment) traitée par le script 02-Build
+Ces deux étapes pourraient être réunies en une seule, cependant il faudra utiliser un serveur pour l'application web (PHP par exemple). En effet on ne peut pas générer des dossiers coté client en JavaScript. Etant donné que l’on ne dispose pas d’un serveur pour réaliser cela, la partie génération de dossier est (pour le moment) traitée par le script 02-Build.
 
 
 
 
 ## 3) Utilisation d’un Projet avec YANE :
-Une fois crées, les projets se trouvent dans le dossier ./Projets. Un projet est un dossier contenant YANE et des scripts permettant sont bon fonctionnement et ajoutant d’autres fonctionnalités comme l’utilisation de wireshark sur n’importe quel  élément du réseau virtuel.
+Une fois crées, les projets se trouvent dans le dossier "./Projets". Un projet est un dossier contenant YANE et des scripts permettant son bon fonctionnement et ajoutant d’autres fonctionnalités comme l’utilisation de wireshark sur n’importe quel élément du réseau virtuel.
 
-Un projet dispose de 2 scripts de gestion START et STOP  pour lancer et arrêter le projet.
-Un projet dispose de 2 types de machines émulées, des dockers et des namespaces. Chaque machine émulée dispose d’un script qui lui est associé (présent dans le dossier scripts du projet correspondant) et de fichiers « partagés » (présents dans le dossier files du projet correspondant).
+Un projet dispose de 2 scripts de gestion START et STOP pour lancer et arrêter le projet.
+<br/>Un projet dispose de 2 types de machines émulées, des dockers et des namespaces. Chaque machine émulée dispose d’un script qui lui est associé (présent dans le dossier scripts du projet correspondant) et de fichiers « partagés » (présents dans le dossier files du projet correspondant).
 
 
 
 
 
 ### Fichiers partagés : 
-Dans le dossier files du projet on retrouve des dossiers correspondants aux éléments réseaux (docker) de notre architecture (exemple : serveur web, dns, dhcp..). A chaque démarrage de projet ces fichiers remplacent les fichiers présents dans le container docker.
-Ce système permet ainsi de sauvegarder les modifications des fichiers de configurations.
+Dans le dossier files du projet on retrouve des dossiers correspondants aux éléments réseaux (docker) de notre architecture (exemple : serveur web, dns, dhcp..). A chaque démarrage de projet ces fichiers remplacent les fichiers présents dans le container Docker.
+Ce système permet ainsi de sauvegarder les modifications des fichiers de configuration.
 
-Chaque image docker dispose de fichiers par défaut qui sont copiés dans leur dossier partagé lors de la création d’un Projet (Phase de Build). On peut retrouver et modifier ces fichiers par défaut dans le dossier ./ModelFiles/files/ on retrouve dans ce dossier les noms des différentes images docker disponibles. Ainsi on retrouve par défaut les fichiers suivants :
+Chaque image Docker dispose de fichiers par défaut qui sont copiés dans leur dossier partagé lors de la création d’un Projet (Phase de Build). On peut retrouver et modifier ces fichiers par défaut dans le dossier ./ModelFiles/files/ on retrouve dans ce dossier les noms des différentes images Docker disponibles (cf partie 7). Ainsi on retrouve par défaut les fichiers suivants :
 
 - Pour le Docker DHCP : Configuration par défaut de dhcpd
 - Pour le Docker DNS : Configuration complète d’exemple (fonctionne pour l’exemple de projet fonctionnel)
@@ -66,7 +70,7 @@ init
 ```
 
 
-(Lors du démarrage du projet avec le script START les scripts associés à chaque docker sont copiés dans le dossier « /etc/scripts » présent dans leur dossier de fichiers partagés respectif, emplacement qui a été préalablement ajouté au PATH du container Docker) 
+(Lors du démarrage du projet avec le script START les scripts associés à chaque Docker sont copiés dans le dossier « /etc/scripts » présent dans leur dossier de fichiers partagés respectif, emplacement qui a été préalablement ajouté au PATH du container Docker) 
 
 Ainsi de cette façon on peut sauvegarder notre avancement dans la configuration en écrivant nos commandes dans les scripts et en modifiants les fichiers de configurations des services dans les fichiers partagés.
 
@@ -142,7 +146,7 @@ password : n7
 
 
 ## 7) Images Dockers :
-- apache_n7:latest → Server web (Apache2), les fichiers du site sont dans le dossier /var/www/html/
+- apache_n7:latest → Server WEB (Apache2), les fichiers du site sont dans le dossier /var/www/html/
 - dns_n7:latest → Server DNS (Bind9)
 - dhcp_n7:latest → Server DHCP (isc-dhcp-server)
 - ftp_n7:latest → Server FTP (proftpd)
@@ -177,10 +181,13 @@ network 17.0.0.0/24 (pour ajouter un réseau)
 
 ## 9) Améliorations à réaliser :
 
-- [ ] Empêcher l’utilisateur de donner des noms réseaux avec des espaces dans l’interface graphique (bug avec YANE)
+- [ ] Empêcher l’utilisateur de donner des noms réseaux avec des espaces dans l’interface graphique, ou remplacement des caractères (bug avec YANE)
 
-- [ ] Gestion des espaces dans le chemin donné en argument du fichier build
+- [ ] Gestion des espaces dans le chemin donné en argument du script Build
 
+- [ ] Prendre en charge le cas où un projet du même nom existe déjà (dans le script Build)
+
+- [ ] Empecher de relier 2 switchs entre eux dans l'interface web ou prendre en charge le cas dans le script Build (en bridgant les inerfaces)
 
 
 
